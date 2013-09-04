@@ -51,11 +51,11 @@ class coordinateAscent:
             sigmasq = 1 / n * np.dot((y - beta0 - np.dot(x, beta)).T, (y - beta0 - np.dot(x, beta)))[0][0]
             beta0 = 1 / n * sum(y - np.dot(x, beta))
             for j in range(k):
-                print('x[:,j] = ')
-                print(x[:, j])
+                #print('x[:,j] = ')
+                #print(x[:, j])
                 #select the whole column j from x (as a row vector)
-                print(sum(x[:, j]))
-                print(sum(x[:, j] ** 2))
+                #print(sum(x[:, j]))
+                #print(sum(x[:, j] ** 2))
 
                 beta[j] = 0
                 beta[j] = np.dot((y - beta0 - np.dot(x, beta)).T, x[:, j]) / (sum(x[:, j] ** 2))
