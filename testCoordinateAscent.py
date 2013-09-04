@@ -2,18 +2,18 @@ __author__ = 'markus'
 
 import numpy as np
 from coordinateAscent import coordinateAscent
+import timeit
 
 def main():
-    beta0 = 1
-    beta = np.array([1, 1, 1, 1, 0, 0, 0, 0])
+    beta = np.array([1, 1, 1, 1, 1, 0, 0, 0, 0])
     #size of test set or number of data sets/measurements, etc.
     N = 100
     #number of features (getting the size of beta)
     p = beta.shape[0]
     #generating a random array in R^N*p
-    x = np.random.random((N, p))
+    X = np.random.random((N, p))
 
-    x = np.array([ [3.8442e-01, 5.5492e-01, 6.7159e-01, 7.4214e-01, 9.9647e-01, 7.3027e-01, 8.8582e-02, 5.5504e-01],
+    X = np.array([ [3.8442e-01, 5.5492e-01, 6.7159e-01, 7.4214e-01, 9.9647e-01, 7.3027e-01, 8.8582e-02, 5.5504e-01],
           [7.6364e-01, 8.2962e-02, 2.7728e-01, 6.4108e-01, 2.2594e-01, 8.5272e-01, 5.4048e-01, 1.9197e-01],
           [3.4709e-01, 5.4699e-01, 7.3942e-01, 9.3196e-02, 1.4081e-01, 4.2505e-01, 1.4281e-01, 5.2842e-01],
           [8.8092e-01, 7.7138e-01, 9.2900e-01, 6.7280e-01, 5.1975e-01, 3.3376e-01, 6.9872e-01, 3.9552e-01],
@@ -113,24 +113,26 @@ def main():
           [7.3408e-01, 6.9381e-01, 4.5292e-01, 5.9207e-01, 1.6840e-01, 2.7867e-01, 7.3312e-01, 1.8986e-01],
           [7.1480e-01, 6.9945e-01, 6.7140e-01, 2.5866e-01, 6.5066e-01, 3.3854e-01, 7.8488e-01, 6.5719e-01],
           [4.8873e-01, 4.5437e-01, 2.9518e-01, 6.1355e-01, 6.1664e-01, 1.4199e-01, 4.3271e-03, 9.1258e-02]])
+    X = np.append(np.ones((N, 1)), X, 1)
     #beta[np.newaxis] is transforming beta into a two dimensional array and .T to a column vector
-    y = beta0 + np.dot(x, beta[np.newaxis].T)
-    print(beta0)
-    print(beta)
-    print(p)
-    print('x = ')
-    print(x)
-    print('y = ')
-    print(y)
+    y = np.dot(X, beta[np.newaxis].T)
+    #print(beta)
+    #print(p)
+    #print('x = ')
+    #print(X)
+    #print('y = ')
+    #print(y)
     ca = coordinateAscent()
-    print(ca.coordinateAscent(y, x, []))
+    print('Solution')
+    print(ca.coordinateAscent(y, X, []))
+    print('----------')
 
     sigma = np.sqrt(0.1)
-    noise = sigma * np.random.random((x.shape[0], 1))
+    noise = sigma * np.random.random((X.shape[0], 1))
     print('lx = ')
-    print(x.shape[0])
+    print(X.shape[0])
     y = y + noise
-    print(ca.coordinateAscent(y, x, []))
+    print(ca.coordinateAscent(y, X, []))
 
 
 if __name__ == '__main__':
