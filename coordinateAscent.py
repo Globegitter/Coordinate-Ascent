@@ -15,7 +15,7 @@ class coordinateAscent:
             - (1 / (2 * sigmasq)) * np.dot((y - np.dot(X, beta)).T, (y - np.dot(X, beta)))
         return logl[0][0]
 
-    def coordinateAscent(self, y, X, init):
+    def coordinateAscent(self, y, X, init, drawGraph = False):
         assert X.shape[0] == y.shape[0] and y.shape[0] > 0, \
             'Matrices must have more than 0 rows and they have to be of the same dimension'
         n = y.shape[0]
@@ -47,20 +47,12 @@ class coordinateAscent:
         i = 0
         plt.figure(1)
 
-        #print(logl)
-
         while logl - prevlogl > TOL and i < MAXIT:
             prevlogl = logl
 
             #updates
             sigmasq = 1 / n * np.dot((y - np.dot(X, beta)).T, (y - np.dot(X, beta)))[0][0]
-            #beta0 = 1 / n * sum(y - np.dot(X, beta))
             for j in range(k):
-                #print('X[:,j] = ')
-                #print(X[:, j])
-                #select the whole column j from X (as a row vector)
-                #print(sum(X[:, j]))
-                #print(sum(X[:, j] ** 2))
 
                 beta[j] = 0
                 beta[j] = np.dot((y - np.dot(X, beta)).T, X[:, j]) / (sum(X[:, j] ** 2))
@@ -71,19 +63,14 @@ class coordinateAscent:
             assert logl - prevlogl > 0, 'Difference must be bigger than 0'
 
             logls[i] = logl
-            #if i % 10 == 0:
-
-                #plt.draw()
             i += 1
 
-        #print('X = ')
-        #print(X)
-        #print('logls')
-        #print(logls)
-        #plt.plot(logls[logls != 0])
-        #plt.xlabel('iteration')
-        #plt.ylabel('log-likelihood')
-        #plt.show()
+        if drawGraph:
+            #just plot all the log likelihoods not 0
+            plt.plot(logls[logls != 0])
+            plt.xlabel('iteration')
+            plt.ylabel('log-likelihood')
+            plt.show()
 
         sigma = np.sqrt(sigmasq)
         return [sigma, beta]
