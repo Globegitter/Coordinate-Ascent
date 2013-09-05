@@ -4,7 +4,6 @@ import numpy as np
 import sys
 import math
 import matplotlib.pyplot as plt
-#from numpy import  *
 
 
 class coordinateAscent:

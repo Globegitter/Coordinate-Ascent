@@ -12,6 +12,7 @@ This repository has basically 4 modules:
 
 ## Requirements
 
-* Python 3.x (3.3 recommended)
+* Python 3.3 (but might also work with Python >= 2.6)
 * Numpy >= 1.7
+* Matplotlib >= 1.3.0
 * For comparison with Lars: scikit-learn >= 0.14
