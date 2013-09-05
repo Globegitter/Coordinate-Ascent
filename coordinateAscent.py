@@ -30,10 +30,10 @@ class coordinateAscent:
             beta0 = y.mean(axis=0)[0]
             beta = 1e-6 * np.ones((k - 1, 1))
             beta = np.append([[beta0]], beta, 0)
-        print('beta =')
-        print(beta)
-        print('beta0 = ')
-        print(beta0)
+        #print('beta =')
+        #print(beta)
+        #print('beta0 = ')
+        #print(beta0)
 
         #assume default tolerance and number of iterations
         TOL = 1e-5
@@ -73,4 +73,4 @@ class coordinateAscent:
             plt.show()
 
         sigma = np.sqrt(sigmasq)
-        return [sigma, beta]
+        return sigma, beta
