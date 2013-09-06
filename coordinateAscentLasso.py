@@ -95,8 +95,6 @@ class CoordinateAscentLasso:
             plt.ylabel('log-likelihood')
             plt.show()
 
-        #sigma = np.sqrt(sigmasq)
-        print('Solutions: ')
         if beta0Seperate:
             return beta0, beta
         else:
