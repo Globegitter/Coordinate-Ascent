@@ -14,13 +14,13 @@ def main():
     cal = CoordinateAscentLasso()
     st = Standardize()
     beta0Seperate = True
+    lam = 0.1
 
     X, y, b = sd.generateData(noise=False,  w=np.array([1, 1, 1, 1, 1, 0, 0, 0, 0, 0])[np.newaxis].T)
     #if beta0Seperate:
     #    beta = np.array([1, 1, 1, 1, 0, 0, 0, 0])[np.newaxis].T
     #else:
     #    beta = np.array([1, 1, 1, 1, 1, 0, 0, 0, 0])[np.newaxis].T
-
 
     #if beta0Seperate:
     #    y = 1 + np.dot(X, beta)
@@ -29,14 +29,20 @@ def main():
     #    y = np.dot(X, beta)
 
     print('Fitting the model with Lasso:')
-    print(cal.coordinateAscentLasso(y, X, 0.1, [], False, beta0Seperate))
+    print('Lambda = ' + str(lam))
+    print('beta0, array of betas:')
+    print(cal.coordinateAscentLasso(y, X, lam, [], False, beta0Seperate))
 
+    print()
     print('Fitting the model with plain \'ol Coordinate Ascent')
+    print('beta0, array of betas:')
     print(ca.coordinateAscent(y, X, [], False))
+    print()
 
-    print('Fitting the model with LARS')
+    print('Fitting the model with LARS (from scikit library)')
     clf = linear_model.Lars()
     print(clf.fit(X, y))
+    print('array of betas:')
     print(clf.coef_)
     #return 1
 

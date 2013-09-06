@@ -8,6 +8,7 @@ class SynthData:
     y will be of size n*1
     w will be of size p*1
     w is sparse, with amount of 0s < p
+    Check uniform or gaussian random
     """
 
     def __init__(self, size=100, features=10):
@@ -17,7 +18,7 @@ class SynthData:
         self.w = np.array([])
 
     def generateDictionary(self, beta0Seperate=True):
-        self.D = np.random.random((self.n, self.p))
+        self.D = np.random.randn(self.n, self.p)
         #adding all ones for beta0 ??do I need that??
         if not beta0Seperate:
             self.D = np.append(np.ones((self.n, 1)), self.D, 1)
@@ -42,9 +43,9 @@ class SynthData:
 
         #Generate y with (or without) some noise
         if not beta0Seperate:
-            self.y = np.dot(self.D, self.w) + noiseLevel * np.random.random((self.D.shape[0], 1))
+            self.y = np.dot(self.D, self.w) + noiseLevel * np.random.randn(self.D.shape[0], 1)
         else:
-            self.y = 1 + np.dot(self.D, self.w) + noiseLevel * np.random.random((self.D.shape[0], 1))
+            self.y = 1 + np.dot(self.D, self.w) + noiseLevel * np.random.randn(self.D.shape[0], 1)
         return self.y
 
     def generateData(self, D=None, w=None, y=None, noise=True, noiseLevel=0.1, beta0Seperate=True):
