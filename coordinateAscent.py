@@ -22,23 +22,19 @@ class coordinateAscent:
 
         if init:
             sigmasq = init[0]
-            beta0 = init[1]
+            #beta0 = init[1]
             beta = init[2]
         else:
             sigmasq = y.var(axis=0, ddof=1)[0]
             beta0 = y.mean(axis=0)[0]
             beta = 1e-6 * np.ones((k - 1, 1))
             beta = np.append([[beta0]], beta, 0)
-        #print('beta =')
-        #print(beta)
-        #print('beta0 = ')
-        #print(beta0)
 
-        #assume default tolerance and number of iterations
+        #Set default tolerance and number of iterations
         TOL = 1e-5
         MAXIT = 100
 
-        #tracking likelihood
+        #Tracking likelihood
         logls = np.zeros((MAXIT, 1))
         prevlogl = -sys.float_info.max
 

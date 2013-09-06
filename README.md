@@ -5,9 +5,9 @@ Implementation of a basic Coordinate Ascent (same thing as Coordinate Descent, j
 ## Modules
 This repository has basically 4 modules:
 
-* Class to Synthesize data
+* Class to synthesize some data (with noise)
 * Coordinate Ascent
-* Coordinate Ascent with Lasso
+* Coordinate Ascent for Lasso
 * File to test everything
 
 ## Requirements
