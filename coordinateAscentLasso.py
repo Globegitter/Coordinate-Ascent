@@ -2,7 +2,6 @@ __author__ = 'markus'
 
 import numpy as np
 import sys
-import math
 import matplotlib.pyplot as plt
 
 class CoordinateAscentLasso:
