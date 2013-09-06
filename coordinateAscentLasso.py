@@ -12,7 +12,7 @@ class CoordinateAscentLasso:
         if beta0 is None:
             logl = -1 / 2 * np.dot((y - np.dot(X, beta)).T, (y - np.dot(X, beta))) - lam * sum(np.absolute(beta))
         else:
-            logl = -1 / 2 * np.dot((y - beta0 - np.dot(X, beta)).T, (y - beta0 - np.dot(X, beta))) - lam * sum(np.absolute(beta))
+            logl = -1 / 2 * np.dot((y - beta0 - np.dot(X, beta)).T, (y - beta0 - np.dot(X, beta))) - lam * sum(np.fabs(beta))
         return logl[0][0]
 
     def shrinkage(self, x, lam=1):
@@ -27,10 +27,12 @@ class CoordinateAscentLasso:
         k = X.shape[1]
 
         if init:
-            #beta0 = init[1]
-            beta = init[0]
+            if beta0Seperate:
+                beta0 = init[0]
+                beta = init[1]
+            else:
+                beta = init[0]
         else:
-            #sigmasq = y.var(axis=0, ddof=1)[0]
             beta0 = y.mean(axis=0)[0]
             if beta0Seperate:
                 beta = np.ones((k, 1))
@@ -47,8 +49,7 @@ class CoordinateAscentLasso:
         prevlogl = -sys.float_info.max
 
         logl = self.logLikelihood(y, X, beta, lam, beta0)
-        print('logl before loop')
-        print(logl)
+
         i = 0
         plt.figure(1)
 
@@ -62,35 +63,27 @@ class CoordinateAscentLasso:
             for j in range(0, k):
 
                 beta[j] = 0
-                #beta[j] = np.dot((y - np.dot(X, beta)).T, X[:, j]) / (sum(X[:, j] ** 2))
 
-                #XNoj = np.append(X[i, 0:j], X[i, j + 1:k])
-                #betaNoj = np.append(beta[0:j], beta[j + 1:k])
-                #yminj = y - np.dot(XNoj, betaNoj)
-                #xj = X[:, j][np.newaxis]
-                #x = np.dot(yminj, xj)
-                #x = yminj
-                #print(sum(X[:, j] ** 2))
-                #print(sum(sum(X ** 2)))
-                #print('!!!!!!!!!!!!!')
-                #print('test = ')
-                #print((y - beta0 - np.dot(X, beta)))
-                #print(np.sum(X[:, j] ** 2))
+                XNoj = np.append(X[:, 0:j], X[:, j + 1:k], axis=1)
+                betaNoj = np.append(beta[0:j], beta[j + 1:k])
+                betaNoj = betaNoj[np.newaxis].T
                 if beta0Seperate:
-                    x = np.dot((y - beta0 - np.dot(X, beta)).T, X[:, j])
+                    yminj = y - beta0 - np.dot(XNoj, betaNoj)
                 else:
-                    x = np.dot((y - np.dot(X, beta)).T, X[:, j])
-                beta[j] = 1 / np.sum(X[:, j] ** 2) * self.shrinkage(x, lam)
+                    yminj = y - np.dot(XNoj, betaNoj)
+                x = np.dot(yminj.T, X[:, j])
+
+                #Note: Why does that give exactly the same solution? Matrix inner product I think...
+                #if beta0Seperate:
+                #    x = np.dot((y - beta0 - np.dot(X, beta)).T, X[:, j])
+                #else:
+                #    x = np.dot((y - np.dot(X, beta)).T, X[:, j])
+
+                beta[j] = self.shrinkage(x / np.sum(X[:, j] ** 2), lam / np.sum(X[:, j] ** 2))
 
             #likelihood for new state
             logl = self.logLikelihood(y, X, beta, lam, beta0)
-            print(beta0)
-            print('ll = ')
-            print(logl)
 
-            #print('Assert stuff:')
-            #print(prevlogl)
-            #print(logl - prevlogl)
             assert logl - prevlogl > 0, 'Difference must be bigger than 0'
 
             logls[i] = logl
