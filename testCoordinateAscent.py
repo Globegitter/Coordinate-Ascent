@@ -13,9 +13,13 @@ def main():
     ca = coordinateAscent()
     cal = CoordinateAscentLasso()
     st = Standardize()
+    beta0Seperate = True
 
     #D, y, w = sd.generateData(noise=False)
-    beta = np.array([1, 1, 1, 1, 0, 0, 0, 0])[np.newaxis].T
+    if beta0Seperate:
+        beta = np.array([1, 1, 1, 1, 0, 0, 0, 0])[np.newaxis].T
+    else:
+        beta = np.array([1, 1, 1, 1, 1, 0, 0, 0, 0])[np.newaxis].T
     X = np.array([[0.6534514, 0.8862400, 0.6820884, 0.5237252, 0.0616684, 0.6374963, 0.8227289, 0.4161163],
                   [0.1608790, 0.8729537, 0.9891378, 0.1431121, 0.0010182, 0.6875849, 0.2572246, 0.7422522],
                   [0.2629684, 0.3679196, 0.6993702, 0.7435787, 0.5547689, 0.0723752, 0.8601573, 0.2724324],
@@ -116,10 +120,15 @@ def main():
                   [0.0809895, 0.2403741, 0.2267565, 0.2389726, 0.4625203, 0.3369198, 0.3183209, 0.1210538],
                   [0.3632816, 0.4223938, 0.4239134, 0.7768441, 0.2630236, 0.7809081, 0.5712789, 0.4809214],
                   [0.2779609, 0.5042654, 0.5251262, 0.5704873, 0.8290134, 0.7428498, 0.4539759, 0.5222430]])
-    #X = np.append(np.ones((X.shape[0], 1)), X, 1)
-    y = 1 + np.dot(X, beta)
+
+    if beta0Seperate:
+        y = 1 + np.dot(X, beta)
+    else:
+        X = np.append(np.ones((X.shape[0], 1)), X, 1)
+        y = np.dot(X, beta)
+
     print('Starting Lasso:')
-    print(cal.coordinateAscentLasso(y, X, 1, [], False))
+    print(cal.coordinateAscentLasso(y, X, 1, [], False, beta0Seperate))
     return 1
 
     y = sd.generateData(D=D, w=w, noiseLevel=0.3)[1]
