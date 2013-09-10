@@ -18,7 +18,7 @@ class CoordinateAscentLasso:
         s = np.sign(x) * np.maximum(np.absolute(x) - lam, 0)
         return s[0]
 
-    def coordinateAscentLasso(self, y, X, lam, init, drawGraph=False, beta0Seperate=True):
+    def coordinateAscentLasso(self, y, X, lam, init=None, drawGraph=False, beta0Seperate=True):
         assert X.shape[0] == y.shape[0] and y.shape[0] > 0, \
             'Matrices must have more than 0 rows and they have to be of the same dimension'
         #np.set_printoptions(suppress=True)

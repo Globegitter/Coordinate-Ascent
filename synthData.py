@@ -2,11 +2,14 @@ import numpy as np
 
 class SynthData:
     """
-    Generating/Synthesyzing data for Coordinate Ascent/Lasso
+    Generating/Synthesyzing data for Coordinate Ascent/Lasso, as well as Dictionary Learning
+    Clarification:
+         - returns for CA/Lasso data are X, y and beta
+         - returns for Dictionary Learning are D, y and w
     Uppercase letter variables are matrices. Lowercase either vectors or scalars.
-    Dictionary D (often also X), will be of size n*p
+    Dictionary D (or Matrix X), will be of size n*p
     y will be of size n*1
-    w will be of size p*1
+    w (sparse code) will be of size p*1
     w is sparse, with amount of 0s < p
     Check uniform or gaussian random
     """

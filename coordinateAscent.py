@@ -14,7 +14,7 @@ class coordinateAscent:
             - (1 / (2 * sigmasq)) * np.dot((y - np.dot(X, beta)).T, (y - np.dot(X, beta)))
         return logl[0][0]
 
-    def coordinateAscent(self, y, X, init, drawGraph = False):
+    def coordinateAscent(self, y, X, init, drawGraph=False):
         assert X.shape[0] == y.shape[0] and y.shape[0] > 0, \
             'Matrices must have more than 0 rows and they have to be of the same dimension'
         n = y.shape[0]
